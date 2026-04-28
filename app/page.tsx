@@ -78,7 +78,7 @@ function Servicios() {
             className="max-w-3xl text-balance font-display text-3xl font-bold leading-[1.05] sm:text-4xl md:text-5xl"
             style={{ letterSpacing: "var(--tracking-display)" }}
           >
-            Cuatro formas concretas de
+            Cuatro formas concretas de{" "}
             <br className="hidden sm:block" />
             <span className="text-muted">automatizar tu operación.</span>
           </h2>
@@ -148,7 +148,7 @@ function Proceso() {
             className="max-w-3xl text-balance font-display text-3xl font-bold leading-[1.05] sm:text-4xl md:text-5xl"
             style={{ letterSpacing: "var(--tracking-display)" }}
           >
-            De idea a producción
+            De idea a producción{" "}
             <br className="hidden sm:block" />
             <span className="text-muted">en cuatro pasos.</span>
           </h2>
@@ -268,7 +268,7 @@ function ManualVsIA() {
             className="max-w-3xl text-balance font-display text-3xl font-bold leading-[1.05] sm:text-4xl md:text-5xl"
             style={{ letterSpacing: "var(--tracking-display)" }}
           >
-            Lo que cambia cuando
+            Lo que cambia cuando{" "}
             <br className="hidden sm:block" />
             <span className="text-muted">automatizás bien.</span>
           </h2>
@@ -278,8 +278,8 @@ function ManualVsIA() {
           </p>
         </header>
 
-        {/* Column headers */}
-        <div className="mb-3 grid grid-cols-[1fr_2fr_2fr] gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted/80 md:grid-cols-[180px_1fr_1fr] md:gap-6">
+        {/* Column headers (desktop only) */}
+        <div className="mb-3 hidden grid-cols-[180px_1fr_1fr] gap-6 px-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted/80 md:grid">
           <span></span>
           <span className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 rounded-full bg-muted/60" />
@@ -295,11 +295,11 @@ function ManualVsIA() {
           {COMPARE_ROWS.map((row, i) => (
             <div
               key={row.label}
-              className={`grid grid-cols-[1fr_2fr_2fr] items-center gap-3 px-4 py-5 md:grid-cols-[180px_1fr_1fr] md:gap-6 md:px-6 md:py-6 ${
+              className={`flex flex-col gap-4 px-5 py-6 md:grid md:grid-cols-[180px_1fr_1fr] md:items-center md:gap-6 md:px-6 md:py-6 ${
                 i !== COMPARE_ROWS.length - 1 ? "border-b border-white/5" : ""
               }`}
             >
-              <span className="font-display text-sm font-medium md:text-base">
+              <span className="font-display text-base font-medium md:text-base">
                 {row.label}
               </span>
 
@@ -339,8 +339,17 @@ function CompareBar({
   const isIA = tone === "ia";
   return (
     <div className="flex flex-col gap-2">
+      {/* Mobile-only tone label */}
+      <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted/80 md:hidden">
+        <span
+          className={`h-1.5 w-1.5 rounded-full ${
+            isIA ? "bg-accent" : "bg-muted/60"
+          }`}
+        />
+        {isIA ? "Con IA" : "Manual"}
+      </span>
       <span
-        className={`text-[12px] leading-snug md:text-[13px] ${
+        className={`text-[13px] leading-snug md:text-[13px] ${
           isIA ? "text-text" : "text-muted"
         }`}
       >
@@ -394,7 +403,7 @@ function Contacto() {
             className="max-w-3xl text-balance font-display text-3xl font-bold leading-[1.05] sm:text-4xl md:text-5xl"
             style={{ letterSpacing: "var(--tracking-display)" }}
           >
-            Contame qué proceso querés
+            Contame qué proceso querés{" "}
             <br className="hidden sm:block" />
             <span className="text-muted">dejar de hacer a mano.</span>
           </h2>
@@ -461,7 +470,7 @@ function FaqSection() {
             className="max-w-3xl text-balance font-display text-3xl font-bold leading-[1.05] sm:text-4xl md:text-5xl"
             style={{ letterSpacing: "var(--tracking-display)" }}
           >
-            Preguntas
+            Preguntas{" "}
             <br className="hidden sm:block" />
             <span className="text-muted">que suelen aparecer.</span>
           </h2>
@@ -498,7 +507,7 @@ function Stack() {
             className="max-w-3xl text-balance font-display text-3xl font-bold leading-[1.05] sm:text-4xl md:text-5xl"
             style={{ letterSpacing: "var(--tracking-display)" }}
           >
-            Herramientas que uso
+            Herramientas que uso{" "}
             <br className="hidden sm:block" />
             <span className="text-muted">todos los días.</span>
           </h2>
@@ -631,7 +640,7 @@ function Hero() {
             <span className="bg-gradient-to-br from-accent-2 to-accent bg-clip-text text-transparent">
               IA
             </span>
-            .
+            .{" "}
             <br className="hidden sm:block" />
             Pipelines, agentes y dashboards{" "}
             <span className="text-muted">en producción.</span>
