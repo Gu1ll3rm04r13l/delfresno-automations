@@ -22,7 +22,7 @@ export type Lead = {
 
 export async function insertLead(lead: Lead): Promise<{ id: string }> {
   const sql = getSql();
-  const rows = await sql`
+  const rows = (await sql`
     INSERT INTO leads (name, email, company, message, source, user_agent, ip_hash)
     VALUES (
       ${lead.name},
@@ -34,8 +34,8 @@ export async function insertLead(lead: Lead): Promise<{ id: string }> {
       ${lead.ipHash ?? null}
     )
     RETURNING id::text AS id
-  `;
-  return { id: (rows[0] as { id: string }).id };
+  `) as { id: string }[];
+  return { id: rows[0].id };
 }
 
 export async function recentLeadsByIp(
@@ -43,11 +43,11 @@ export async function recentLeadsByIp(
   windowSeconds = 300
 ): Promise<number> {
   const sql = getSql();
-  const rows = await sql`
+  const rows = (await sql`
     SELECT count(*)::int AS n
     FROM leads
     WHERE ip_hash = ${ipHash}
       AND created_at > now() - (${windowSeconds} || ' seconds')::interval
-  `;
-  return (rows[0] as { n: number }).n;
+  `) as { n: number }[];
+  return rows[0].n;
 }
