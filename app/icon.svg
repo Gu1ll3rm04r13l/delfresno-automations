@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#08070A"/>
+  <circle cx="8" cy="16" r="3" fill="#E63946"/>
+  <text x="14" y="21" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="700" fill="#F4F1F2" letter-spacing="-0.5">df</text>
+</svg>
