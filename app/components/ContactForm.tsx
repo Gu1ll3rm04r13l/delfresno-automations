@@ -4,14 +4,18 @@ import { useState, type FormEvent } from "react";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+type FieldErrors = Partial<Record<"name" | "email" | "company" | "message", string>>;
+
 export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
     setErrorMsg("");
+    setFieldErrors({});
 
     const fd = new FormData(e.currentTarget);
     const payload = {
@@ -28,9 +32,14 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = (await res.json()) as { ok: boolean; error?: string };
+      const data = (await res.json()) as {
+        ok: boolean;
+        error?: string;
+        fieldErrors?: FieldErrors;
+      };
       if (!data.ok) {
         setStatus("error");
+        setFieldErrors(data.fieldErrors ?? {});
         setErrorMsg(data.error ?? "No pudimos enviar el mensaje. Probá de nuevo.");
         return;
       }
@@ -93,17 +102,18 @@ export default function ContactForm() {
       </div>
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-        <Field label="Nombre" name="name" required placeholder="Ariel" />
+        <Field label="Nombre" name="name" required placeholder="Ariel" error={fieldErrors.name} />
         <Field
           label="Email"
           name="email"
           type="email"
           required
           placeholder="vos@empresa.com"
+          error={fieldErrors.email}
         />
       </div>
 
-      <Field label="Empresa (opcional)" name="company" placeholder="Acme SA" />
+      <Field label="Empresa (opcional)" name="company" placeholder="Acme SA" error={fieldErrors.company} />
 
       <div className="flex flex-col gap-2">
         <label
@@ -118,11 +128,22 @@ export default function ContactForm() {
           required
           rows={5}
           placeholder="Contame qué proceso te está sangrando horas. Cuanto más concreto, mejor."
-          className="w-full resize-none rounded-lg border border-white/10 bg-bg/60 px-4 py-3 text-[15px] text-text placeholder:text-muted/50 transition-colors focus:border-accent/50 focus:outline-none"
+          aria-invalid={fieldErrors.message ? true : undefined}
+          aria-describedby={fieldErrors.message ? "message-error" : undefined}
+          className={`w-full resize-none rounded-lg border bg-bg/60 px-4 py-3 text-[15px] text-text placeholder:text-muted/50 transition-colors focus:outline-none ${
+            fieldErrors.message
+              ? "border-accent/70 focus:border-accent"
+              : "border-white/10 focus:border-accent/50"
+          }`}
         />
+        {fieldErrors.message && (
+          <p id="message-error" role="alert" className="font-mono text-[11px] text-accent">
+            {fieldErrors.message}
+          </p>
+        )}
       </div>
 
-      {status === "error" && (
+      {status === "error" && Object.keys(fieldErrors).length === 0 && (
         <p
           role="alert"
           className="rounded-lg border border-accent/30 bg-accent/[0.06] px-4 py-3 text-sm text-text"
@@ -167,13 +188,16 @@ function Field({
   type = "text",
   required = false,
   placeholder,
+  error,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   placeholder?: string;
+  error?: string;
 }) {
+  const errorId = `${name}-error`;
   return (
     <div className="flex flex-col gap-2">
       <label
@@ -188,11 +212,22 @@ function Field({
         type={type}
         required={required}
         placeholder={placeholder}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? errorId : undefined}
         autoComplete={
           name === "email" ? "email" : name === "name" ? "name" : "off"
         }
-        className="w-full rounded-lg border border-white/10 bg-bg/60 px-4 py-3 text-[15px] text-text placeholder:text-muted/50 transition-colors focus:border-accent/50 focus:outline-none"
+        className={`w-full rounded-lg border bg-bg/60 px-4 py-3 text-[15px] text-text placeholder:text-muted/50 transition-colors focus:outline-none ${
+          error
+            ? "border-accent/70 focus:border-accent"
+            : "border-white/10 focus:border-accent/50"
+        }`}
       />
+      {error && (
+        <p id={errorId} role="alert" className="font-mono text-[11px] text-accent">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

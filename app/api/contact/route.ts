@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { contactSchema } from "@/lib/validation";
 import { insertLead, recentLeadsByIp } from "@/lib/db";
 import { sendLeadNotification } from "@/lib/email";
@@ -25,7 +26,15 @@ export async function POST(request: Request): Promise<Response> {
       return json({ ok: true }, 200);
     }
     const firstError = parsed.error.issues[0]?.message ?? "Datos inválidos";
-    return json({ ok: false, error: firstError }, 400);
+    // Errores por campo para que el form los muestre debajo del input correcto
+    const flat = z.flattenError(parsed.error);
+    const fieldErrors: Record<string, string> = {};
+    for (const [field, msgs] of Object.entries(flat.fieldErrors)) {
+      if (field === "website") continue; // honeypot nunca se expone
+      const msg = (msgs as string[] | undefined)?.[0];
+      if (msg) fieldErrors[field] = msg;
+    }
+    return json({ ok: false, error: firstError, fieldErrors }, 400);
   }
 
   const data = parsed.data;

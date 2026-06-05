@@ -2,12 +2,14 @@ import HeroCanvas from "./components/HeroCanvas";
 import StackList from "./components/StackList";
 import Faq from "./components/Faq";
 import ContactForm from "./components/ContactForm";
+import ScrollReveal from "./components/ScrollReveal";
 
 const CAL_URL = "https://cal.com/guillermo-ariel-del-fresno/30min";
 
 export default function Home() {
   return (
     <main className="relative flex flex-1 flex-col">
+      <ScrollReveal />
       <Hero />
       <Servicios />
       <Proceso />
@@ -70,7 +72,7 @@ function Servicios() {
       className="relative border-t border-white/5 bg-bg py-24 md:py-32"
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <header className="mb-14 flex flex-col gap-4 md:mb-20">
+        <header data-reveal className="mb-14 flex flex-col gap-4 md:mb-20">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
             ※ Servicios
           </span>
@@ -84,7 +86,7 @@ function Servicios() {
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+        <div data-reveal className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
           {SERVICIOS.map((s) => (
             <ServicioCard key={s.num} servicio={s} />
           ))}
@@ -140,7 +142,7 @@ function Proceso() {
       className="relative border-t border-white/5 bg-bg py-24 md:py-32"
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <header className="mb-14 flex flex-col gap-4 md:mb-20">
+        <header data-reveal className="mb-14 flex flex-col gap-4 md:mb-20">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
             ※ Proceso
           </span>
@@ -158,7 +160,7 @@ function Proceso() {
           </p>
         </header>
 
-        <ol className="relative flex flex-col gap-px">
+        <ol data-reveal className="relative flex flex-col gap-px">
           {/* vertical line */}
           <div
             aria-hidden
@@ -260,7 +262,7 @@ function ManualVsIA() {
       className="relative border-t border-white/5 bg-bg py-24 md:py-32"
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <header className="mb-14 flex flex-col gap-4 md:mb-20">
+        <header data-reveal className="mb-14 flex flex-col gap-4 md:mb-20">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
             ※ Manual vs IA
           </span>
@@ -291,7 +293,7 @@ function ManualVsIA() {
           </span>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-white/8 bg-surface/40">
+        <div data-reveal className="overflow-hidden rounded-2xl border border-white/8 bg-surface/40">
           {COMPARE_ROWS.map((row, i) => (
             <div
               key={row.label}
@@ -395,7 +397,7 @@ function Contacto() {
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 md:px-10">
-        <header className="mb-14 flex flex-col gap-4 md:mb-16">
+        <header data-reveal className="mb-14 flex flex-col gap-4 md:mb-16">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
             ※ Contacto
           </span>
@@ -409,7 +411,7 @@ function Contacto() {
           </h2>
         </header>
 
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
+        <div data-reveal className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
           {/* Garantías column */}
           <aside className="flex flex-col gap-8">
             <div>
@@ -462,7 +464,7 @@ function FaqSection() {
       className="relative border-t border-white/5 bg-bg py-24 md:py-32"
     >
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
-        <header className="mb-14 flex flex-col gap-4 md:mb-16">
+        <header data-reveal className="mb-14 flex flex-col gap-4 md:mb-16">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
             ※ FAQ
           </span>
@@ -499,7 +501,7 @@ function Stack() {
       className="relative border-t border-white/5 bg-bg py-24 md:py-32"
     >
       <div className="mx-auto w-full max-w-6xl px-6 md:px-10">
-        <header className="mb-14 flex flex-col gap-4 md:mb-20">
+        <header data-reveal className="mb-14 flex flex-col gap-4 md:mb-20">
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent">
             ※ Stack
           </span>

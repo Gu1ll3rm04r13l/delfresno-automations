@@ -30,7 +30,11 @@ async function callRoute(body: unknown, headers: Record<string, string> = {}) {
     body: JSON.stringify(body),
   });
   const res = await POST(req);
-  const json = (await res.json()) as { ok: boolean; error?: string };
+  const json = (await res.json()) as {
+    ok: boolean;
+    error?: string;
+    fieldErrors?: Record<string, string>;
+  };
   return { res, json };
 }
 
@@ -60,6 +64,21 @@ describe("POST /api/contact", () => {
     expect(json.ok).toBe(false);
     expect(db.insertLead).not.toHaveBeenCalled();
     expect(email.sendLeadNotification).not.toHaveBeenCalled();
+  });
+
+  it("validación falla: devuelve fieldErrors por campo (no solo global)", async () => {
+    const { json } = await callRoute({
+      name: "A", // muy corto
+      email: "no-es-email",
+      message: "corto", // < 10
+    });
+    expect(json.ok).toBe(false);
+    expect(json.fieldErrors).toBeDefined();
+    expect(json.fieldErrors?.name).toBeTruthy();
+    expect(json.fieldErrors?.email).toBeTruthy();
+    expect(json.fieldErrors?.message).toBeTruthy();
+    // El honeypot nunca se expone en fieldErrors
+    expect(json.fieldErrors?.website).toBeUndefined();
   });
 
   it("honeypot disparado: retorna ok:true silenciosamente sin guardar/mandar", async () => {
